@@ -1,0 +1,11 @@
+name: FakeHumans
+version: '${project.version}'
+main: me.sialim.fakehumans.FakeHumans
+api-version: '1.21'
+depend: [ProtocolLib, Citizens, Calendar]
+commands:
+  fakehumans:
+    aliases:
+      - fakehuman
+      - fh
+    usage: /fakehumans <action>
