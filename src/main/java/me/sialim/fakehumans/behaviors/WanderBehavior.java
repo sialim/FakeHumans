@@ -4,13 +4,17 @@ import me.sialim.fakehumans.traits.FHHomunculusTrait;
 import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
 import net.citizensnpcs.api.ai.tree.BehaviorStatus;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class WanderBehavior extends BehaviorGoalAdapter {
     private final NPC npc;
+    private final Player owner;
 
-    public WanderBehavior(NPC npc) {
+    public WanderBehavior(NPC npc, Player owner) {
         this.npc = npc;
+        this.owner = owner;
     }
 
     @Override
@@ -37,6 +41,6 @@ public class WanderBehavior extends BehaviorGoalAdapter {
                 return false;
             }
         }
-        return true;
+        return !owner.isOnline() || owner.getLocation().distance(npc.getEntity().getLocation()) >= 20;
     }
 }

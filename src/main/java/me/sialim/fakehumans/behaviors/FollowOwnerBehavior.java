@@ -4,6 +4,7 @@ import me.sialim.fakehumans.traits.FHHomunculusTrait;
 import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
 import net.citizensnpcs.api.ai.tree.BehaviorStatus;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class FollowOwnerBehavior extends BehaviorGoalAdapter {
@@ -24,8 +25,13 @@ public class FollowOwnerBehavior extends BehaviorGoalAdapter {
     public BehaviorStatus run() {
         double distanceToOwner = npc.getEntity().getLocation().distance(owner.getLocation());
         double verticalDistance = npc.getEntity().getLocation().getY() - owner.getLocation().getY();
-        if (distanceToOwner > 1) {
+
+        if (verticalDistance > 1) {
             npc.getNavigator().setTarget(owner.getLocation());
+        }
+
+        if (distanceToOwner > 1) {
+            npc.getNavigator().setTarget(owner, false);
         } else {
             npc.getNavigator().cancelNavigation();
         }

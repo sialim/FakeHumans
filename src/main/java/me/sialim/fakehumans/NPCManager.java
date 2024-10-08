@@ -52,6 +52,8 @@ public class NPCManager implements Listener {
         npc.data().setPersistent(NPC.Metadata.SWIM, true);
         npc.data().setPersistent(NPC.Metadata.SHOULD_SAVE, true);
         npc.data().setPersistent(NPC.Metadata.PATHFINDER_FALL_DISTANCE, 2);
+        npc.data().setPersistent(NPC.Metadata.REMOVE_FROM_PLAYERLIST, false);
+        npc.data().setPersistent(NPC.Metadata.REMOVE_FROM_TABLIST, true);
 
 
         FHOwnerTrait ownerTrait = npc.getOrAddTrait(FHOwnerTrait.class);
@@ -158,11 +160,14 @@ public class NPCManager implements Listener {
         NPC clickedNPC = e.getNPC();
         Player p = e.getClicker();
 
+        Bukkit.getLogger().info("Player right-clicked NPC: " + clickedNPC.getId());
+
         if (clickedNPC.hasTrait(FHHomunculusTrait.class)) {
             FHHomunculusTrait trait = clickedNPC.getOrAddTrait(FHHomunculusTrait.class);
-
+            Bukkit.getLogger().info("NPC has Homunculus trait");
             if (trait.getOwner().equals(p)) {
                 trait.getSitBehavior().toggleSit();
+                Bukkit.getLogger().info("Player toggled Homunculus");
             }
         }
     }

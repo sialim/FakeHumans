@@ -25,11 +25,12 @@ public class HomunculusAI {
 
     private void setupBehaviorTree() {
         NavigatorParameters navParams = npc.getNavigator().getDefaultParameters();
-        navParams.speedModifier(10.0f);
+        //navParams.speedModifier(10.0f);
         navParams.range(30);
         navParams.examiner(new FallingExaminer(5));
         navParams.debug(true);
-        //navParams.useNewPathfinder(true);
+        navParams.useNewPathfinder(true);
+        navParams.updatePathRate(20);
         npc.getDefaultGoalController().clear();
 
 
@@ -38,7 +39,7 @@ public class HomunculusAI {
                         new CombatBehavior(npc, owner), // Run from hostile mobs
                         new IfElse(() -> owner.isOnline() && owner.getLocation().distance(npc.getEntity().getLocation()) < 20,
                                 new FollowOwnerBehavior(npc, owner), // Follow owner if close
-                                new WanderBehavior(npc) // Wander if owner is far
+                                new WanderBehavior(npc, owner) // Wander if owner is far
                         )
                 )
         ), 1);
