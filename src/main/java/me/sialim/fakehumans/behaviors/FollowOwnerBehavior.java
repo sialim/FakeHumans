@@ -24,16 +24,14 @@ public class FollowOwnerBehavior extends BehaviorGoalAdapter {
     @Override
     public BehaviorStatus run() {
         double distanceToOwner = npc.getEntity().getLocation().distance(owner.getLocation());
-        double verticalDistance = npc.getEntity().getLocation().getY() - owner.getLocation().getY();
+        double verticalDistance = Math.abs(npc.getEntity().getLocation().getY() - owner.getLocation().getY());
 
-        if (verticalDistance > 1) {
-            npc.getNavigator().setTarget(owner.getLocation());
-        }
-
-        if (distanceToOwner > 1) {
-            npc.getNavigator().setTarget(owner, false);
-        } else {
-            npc.getNavigator().cancelNavigation();
+        if (!npc.getNavigator().isNavigating()) {
+            if (distanceToOwner > 2 || verticalDistance > 1) {
+                npc.getNavigator().setTarget(owner, false);
+            } else {
+                npc.getNavigator().cancelNavigation();
+            }
         }
         return BehaviorStatus.RUNNING;
     }

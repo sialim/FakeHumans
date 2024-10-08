@@ -67,6 +67,8 @@ public class SkinManager {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
                     skinTrait.setTexture(texture, signature);
+                    skinTrait.setTexture("ewogICJ0aW1lc3RhbXAiIDogMTcyODQxMzY3ODg1MSwKICAicHJvZmlsZUlkIiA6ICI3YWRhMmY0ZjY0Nzk0NmEyOTFkODVhZDUyZDczN2NiZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJzbWFydDExMjU1MCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8zMDM0ZThkOTA4NDU4NDg0ODc3MDU3MjQ5ZDFiYmY0MDFjMWQzNjEwNmU5ZDZjNTc0OTMzYjhiZDkyMzA3MmU5IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0",
+                            "lI6GhkSWcWPXr7kxzxM/jwPJfBCTq9f8TJbwkKV2xpntKmg0hhEwWt9oN322e/P1SjAc7ovhZznySTl2ZjFow6b2r1kivQ6Xec5EOknz2VGMEL6lT+TIdp8XY8QoazCr8QHdyTJurDltLz2Mn1ifQpsAuG97jBIb/4fl1pYPb1uithdrbTrWgorUIYktCjQzbIe7ybYCbj2XXIzQJuVT/w0rOv8IF0TdJpRBQYTnv/uAX3wsq0daJeQAoAahvlENeVfFYKnaaFDrj+JY2Yq4zlWNrBiB8DuTp/mjhDi9LtoIJF6s0bBkzL+Hro7OdtAFnrVbhmQtwsvP/Dpr3Gw0n3zWus47E67/vqlP5l8pQs5z2edNrZ/2RACRX36O03ZOrd2CVGBa5vOgCmiq5k668kZjpufwvYiCxOjjwdbBmga0zmnUAfOcg32/V7tWPTJzXArcq7HTULB4HhgeCtAsgtikvy2E6mUj/YZPlVXBLtTr/N5Gq0vAWo1zNWZjbJ7nsQV3BhR5+PRF+3ByGCNWyo324j13o9wkdEfmlVaYDzkc1NZ3o3gFBSgZ6XPaXgqfL3LQiFtjpzniGExHDX2cxtgDyCE+RupOamjxVe/DVMJwxKzH+TMkZzk42JO7iMZ5umoCyfnIlntED3yNtNT26IoJDzXkcRgqSMkIUmqWo3A=");
                 });
             } catch (Exception e) {
                 Bukkit.getLogger().warning("Failed to set skin for " + username + ": " + e.getMessage());

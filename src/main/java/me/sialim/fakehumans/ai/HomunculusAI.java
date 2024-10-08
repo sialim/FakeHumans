@@ -12,8 +12,11 @@ import net.citizensnpcs.npc.ai.FallingExaminer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
-public class HomunculusAI {
+public class HomunculusAI implements Listener {
     private final NPC npc;
     private final Player owner;
 
@@ -26,18 +29,20 @@ public class HomunculusAI {
     private void setupBehaviorTree() {
         NavigatorParameters navParams = npc.getNavigator().getDefaultParameters();
         //navParams.speedModifier(10.0f);
-        navParams.range(30);
-        navParams.examiner(new FallingExaminer(5));
+        navParams.range(10);
+        navParams.examiner(new FallingExaminer(2));
         navParams.debug(true);
         navParams.useNewPathfinder(true);
         navParams.updatePathRate(20);
+        navParams.attackRange(5);
+        navParams.attackDelayTicks(10);
         npc.getDefaultGoalController().clear();
 
 
         npc.getDefaultGoalController().addGoal(Sequence.createSequence(
                 new IfElse(() -> findClosestHostileMob() != null,
                         new CombatBehavior(npc, owner), // Run from hostile mobs
-                        new IfElse(() -> owner.isOnline() && owner.getLocation().distance(npc.getEntity().getLocation()) < 20,
+                        new IfElse(owner::isOnline,
                                 new FollowOwnerBehavior(npc, owner), // Follow owner if close
                                 new WanderBehavior(npc, owner) // Wander if owner is far
                         )
@@ -51,5 +56,11 @@ public class HomunculusAI {
                 .map(entity -> (LivingEntity) entity)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @EventHandler public void onPlayerJoin(PlayerJoinEvent e) {
+        if (e.getPlayer().equals(owner)) {
+            setupBehaviorTree();
+        }
     }
 }

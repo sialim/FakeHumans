@@ -37,9 +37,7 @@ public class NPCManager implements Listener {
 
     public NPC createNPC (String name, Location location, UUID ownerUUID) {
         NPC npc = registry.createNPC(EntityType.PLAYER, name);
-        npc.setName(name);
-        npc.spawn(location);
-        skinManager.setSkinFromUsername(npc, "sialim");
+        //npc.getOrAddTrait(SkinTrait.class).setSkinPersistent(Bukkit.getPlayer(ownerUUID));
         npc.getOrAddTrait(GameModeTrait.class).setGameMode(GameMode.SURVIVAL);
         npc.data().setPersistent(NPC.Metadata.FLYABLE, false);
         npc.data().setPersistent(NPC.Metadata.PICKUP_ITEMS, true);
@@ -54,6 +52,7 @@ public class NPCManager implements Listener {
         npc.data().setPersistent(NPC.Metadata.PATHFINDER_FALL_DISTANCE, 2);
         npc.data().setPersistent(NPC.Metadata.REMOVE_FROM_PLAYERLIST, false);
         npc.data().setPersistent(NPC.Metadata.REMOVE_FROM_TABLIST, true);
+        npc.data().setPersistent(NPC.Metadata.KNOCKBACK, true);
 
 
         FHOwnerTrait ownerTrait = npc.getOrAddTrait(FHOwnerTrait.class);
@@ -69,6 +68,10 @@ public class NPCManager implements Listener {
         } else {
             Bukkit.getLogger().severe("Owner player offline or doesn't exist.");
         }
+
+        npc.setName(name);
+        npc.spawn(location);
+        skinManager.setSkinFromUsername(npc, "smart112550");
 
         return npc;
     }

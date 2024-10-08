@@ -1,6 +1,7 @@
 package me.sialim.fakehumans.behaviors;
 
 import me.sialim.fakehumans.traits.FHHomunculusTrait;
+import net.citizensnpcs.api.ai.AttackStrategy;
 import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
 import net.citizensnpcs.api.ai.tree.BehaviorStatus;
 import net.citizensnpcs.api.npc.NPC;
