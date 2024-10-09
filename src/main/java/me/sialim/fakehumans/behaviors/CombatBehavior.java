@@ -54,7 +54,7 @@ public class CombatBehavior extends BehaviorGoalAdapter {
     @Override
     public boolean shouldExecute() {
         if (npc.hasTrait(FHHomunculusTrait.class)) {
-            FHHomunculusTrait trait = npc.getTrait(FHHomunculusTrait.class);
+            FHHomunculusTrait trait = npc.getOrAddTrait(FHHomunculusTrait.class);
             if (trait.getSitBehavior().isSitting) {
                 return false;
             }

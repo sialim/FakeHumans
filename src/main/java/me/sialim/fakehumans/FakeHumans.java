@@ -79,7 +79,6 @@ public final class FakeHumans extends JavaPlugin implements TabExecutor {
                         }
                         NPC npc = npcManager.createNPC(npcName, loc, ownerUUID);
                         setNPCSize(npc, 0.65f);
-                        npc.getEntity().setGravity(true);
                         p.sendMessage(ChatColor.GREEN + "[FH] NPC " + npc.getId() + ": " + npcName + " created and following you.");
                         p.sendMessage();
                         return true;
@@ -123,7 +122,7 @@ public final class FakeHumans extends JavaPlugin implements TabExecutor {
         return null;
     }
 
-    private void setNPCSize(NPC npc, double size) {
+    public void setNPCSize(NPC npc, double size) {
         if (npc.isSpawned()) {
             Entity entity = npc.getEntity();
             ((LivingEntity) entity).getAttribute(Attribute.GENERIC_SCALE).setBaseValue(size);

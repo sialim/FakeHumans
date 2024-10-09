@@ -31,7 +31,7 @@ public class HomunculusAI implements Listener {
         //navParams.speedModifier(10.0f);
         navParams.range(10);
         navParams.examiner(new FallingExaminer(2));
-        navParams.debug(true);
+        navParams.debug(false);
         navParams.useNewPathfinder(true);
         navParams.updatePathRate(20);
         navParams.attackRange(5);
@@ -41,10 +41,10 @@ public class HomunculusAI implements Listener {
 
         npc.getDefaultGoalController().addGoal(Sequence.createSequence(
                 new IfElse(() -> findClosestHostileMob() != null,
-                        new CombatBehavior(npc, owner), // Run from hostile mobs
-                        new IfElse(owner::isOnline,
-                                new FollowOwnerBehavior(npc, owner), // Follow owner if close
-                                new WanderBehavior(npc, owner) // Wander if owner is far
+                        new CombatBehavior(npc, owner),
+                        new IfElse(() -> owner.isOnline() && owner.getLocation().distance(npc.getEntity().getLocation()) < 20,
+                                new FollowOwnerBehavior(npc, owner),
+                                new WanderBehavior(npc, owner)
                         )
                 )
         ), 1);
