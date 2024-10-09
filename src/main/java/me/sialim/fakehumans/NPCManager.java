@@ -7,6 +7,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.citizensnpcs.trait.AttributeTrait;
 import net.citizensnpcs.trait.Controllable;
 import net.citizensnpcs.trait.GameModeTrait;
 import net.citizensnpcs.trait.SkinTrait;
@@ -14,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
@@ -39,6 +41,7 @@ public class NPCManager implements Listener {
         NPC npc = registry.createNPC(EntityType.PLAYER, name);
         //npc.getOrAddTrait(SkinTrait.class).setSkinPersistent(Bukkit.getPlayer(ownerUUID));
         npc.getOrAddTrait(GameModeTrait.class).setGameMode(GameMode.SURVIVAL);
+        npc.getOrAddTrait(AttributeTrait.class).setAttributeValue(Attribute.GENERIC_SCALE, 0.65);
         npc.data().setPersistent(NPC.Metadata.FLYABLE, false);
         npc.data().setPersistent(NPC.Metadata.PICKUP_ITEMS, true);
         npc.data().setPersistent(NPC.Metadata.COLLIDABLE, true);
@@ -70,8 +73,9 @@ public class NPCManager implements Listener {
         }
 
         npc.setName(name);
-        npc.spawn(location);
         skinManager.setSkinFromUsername(npc, "smart112550");
+        npc.spawn(location);
+
 
         return npc;
     }

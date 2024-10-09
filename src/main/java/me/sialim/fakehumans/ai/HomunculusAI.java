@@ -7,6 +7,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.NavigatorParameters;
 import net.citizensnpcs.api.ai.tree.IfElse;
 import net.citizensnpcs.api.ai.tree.Sequence;
+import net.citizensnpcs.api.astar.pathfinder.DoorExaminer;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.ai.FallingExaminer;
 import org.bukkit.entity.LivingEntity;
@@ -31,6 +32,7 @@ public class HomunculusAI implements Listener {
         //navParams.speedModifier(10.0f);
         navParams.range(10);
         navParams.examiner(new FallingExaminer(2));
+        navParams.examiner(new DoorExaminer());
         navParams.debug(false);
         navParams.useNewPathfinder(true);
         navParams.updatePathRate(20);

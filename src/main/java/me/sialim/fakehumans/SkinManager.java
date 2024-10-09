@@ -69,9 +69,6 @@ public class SkinManager {
                     SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
                     skinTrait.setTexture(texture, signature);
                     skinTrait.setSkinPersistent(username, skinTrait.getSignature(), skinTrait.getTexture());
-                    if (npc.hasTrait(FHHomunculusTrait.class)) {
-                        plugin.setNPCSize(npc, 0.65f);
-                    }
                 });
             } catch (Exception e) {
                 Bukkit.getLogger().warning("Failed to set skin for " + username + ": " + e.getMessage());

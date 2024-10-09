@@ -78,7 +78,6 @@ public final class FakeHumans extends JavaPlugin implements TabExecutor {
                             npcName += args[1];
                         }
                         NPC npc = npcManager.createNPC(npcName, loc, ownerUUID);
-                        setNPCSize(npc, 0.65f);
                         p.sendMessage(ChatColor.GREEN + "[FH] NPC " + npc.getId() + ": " + npcName + " created and following you.");
                         p.sendMessage();
                         return true;
