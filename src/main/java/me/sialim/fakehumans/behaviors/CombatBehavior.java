@@ -1,6 +1,7 @@
 package me.sialim.fakehumans.behaviors;
 
 import me.sialim.fakehumans.traits.FHHomunculusTrait;
+import me.sialim.fakehumans.traits.FHSitTrait;
 import net.citizensnpcs.api.ai.AttackStrategy;
 import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
 import net.citizensnpcs.api.ai.tree.BehaviorStatus;
@@ -32,7 +33,7 @@ public class CombatBehavior extends BehaviorGoalAdapter {
 
     @Override
     public BehaviorStatus run() {
-        Bukkit.getLogger().info("CombatBehavior running");
+        //Bukkit.getLogger().info("CombatBehavior running");
         LivingEntity target = findClosestHostileMob();
         if (target != null) {
             Location fleeLocation = npc.getEntity().getLocation().clone()
@@ -55,9 +56,10 @@ public class CombatBehavior extends BehaviorGoalAdapter {
     @Override
     public boolean shouldExecute() {
         if (npc.hasTrait(FHHomunculusTrait.class)) {
-            FHHomunculusTrait trait = npc.getOrAddTrait(FHHomunculusTrait.class);
-            if (trait.getSitBehavior().isSitting) {
-                return false;
+            if (npc.hasTrait(FHSitTrait.class)) {
+                if (npc.getOrAddTrait(FHSitTrait.class).isSitting()) {
+                    return false;
+                }
             }
         }
 

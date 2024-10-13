@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import me.sialim.calendar.Calendar;
 import me.sialim.fakehumans.traits.FHHomunculusTrait;
 import me.sialim.fakehumans.traits.FHOwnerTrait;
+import me.sialim.fakehumans.traits.FHSitTrait;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.TraitInfo;
@@ -51,6 +52,14 @@ public final class FakeHumans extends JavaPlugin implements TabExecutor {
                 getLogger().info("Successfully registered FHHomunculusTrait.");
             } catch (IllegalArgumentException e) {
                 getLogger().log(Level.SEVERE, "Failed to register FHHomunculusTrait: " + e.getMessage(), e);
+            }
+
+            try {
+                getLogger().info("Registering FHSitTrait...");
+                CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(FHSitTrait.class));
+                getLogger().info("Successfully registered FHSitTrait.");
+            } catch (IllegalArgumentException e) {
+                getLogger().log(Level.SEVERE, "Failed to register FHSitTrait: " + e.getMessage(), e);
             }
         }
 

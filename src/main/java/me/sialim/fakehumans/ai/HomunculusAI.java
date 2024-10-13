@@ -30,7 +30,6 @@ public class HomunculusAI implements Listener {
         this.owner = owner;
         this.plugin = plugin;
         setupBehaviorTree();
-        registerListener();
     }
 
     private void setupBehaviorTree() {
@@ -48,9 +47,9 @@ public class HomunculusAI implements Listener {
 
 
         npc.getDefaultGoalController().addGoal(Sequence.createSequence(
-                new IfElse(() -> findClosestHostileMob() != null,
+                new IfElse(() -> findClosestHostileMob() != null && new CombatBehavior(npc, owner).shouldExecute(),
                         new CombatBehavior(npc, owner),
-                        new IfElse(() -> owner.isOnline() && owner.getLocation().distance(npc.getEntity().getLocation()) < 20,
+                        new IfElse(() -> new FollowOwnerBehavior(npc, owner).shouldExecute(),
                                 new FollowOwnerBehavior(npc, owner),
                                 new WanderBehavior(npc, owner)
                         )
@@ -64,20 +63,5 @@ public class HomunculusAI implements Listener {
                 .map(entity -> (LivingEntity) entity)
                 .findFirst()
                 .orElse(null);
-    }
-
-    @EventHandler public void onPlayerJoin(PlayerJoinEvent e) {
-        if (e.getPlayer().equals(owner)) {
-            setupBehaviorTree();
-        }
-    }
-
-    private void registerListener() {
-        PluginManager pm = Bukkit.getServer().getPluginManager();
-        pm.registerEvents(this, plugin);
-    }
-
-    public void unregisterListener() {
-        PlayerJoinEvent.getHandlerList().unregister(this);
     }
 }

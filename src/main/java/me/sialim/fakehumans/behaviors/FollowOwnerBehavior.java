@@ -1,6 +1,7 @@
 package me.sialim.fakehumans.behaviors;
 
 import me.sialim.fakehumans.traits.FHHomunculusTrait;
+import me.sialim.fakehumans.traits.FHSitTrait;
 import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
 import net.citizensnpcs.api.ai.tree.BehaviorStatus;
 import net.citizensnpcs.api.npc.NPC;
@@ -28,7 +29,7 @@ public class FollowOwnerBehavior extends BehaviorGoalAdapter {
         if (!owner.isOnline()) {
             return BehaviorStatus.SUCCESS;
         }
-        Bukkit.getLogger().info("FollowOwnerBehavior running");
+        //Bukkit.getLogger().info("FollowOwnerBehavior running");
         double distanceToOwner = npc.getEntity().getLocation().distance(owner.getLocation());
         double minFollowDistance = 2.0;
         double maxFollowDistance = 40.0;
@@ -47,9 +48,10 @@ public class FollowOwnerBehavior extends BehaviorGoalAdapter {
     @Override
     public boolean shouldExecute() {
         if (npc.hasTrait(FHHomunculusTrait.class)) {
-            FHHomunculusTrait trait = npc.getOrAddTrait(FHHomunculusTrait.class);
-            if (trait.getSitBehavior().isSitting) {
-                return false;
+            if (npc.hasTrait(FHSitTrait.class)) {
+                if (npc.getOrAddTrait(FHSitTrait.class).isSitting()) {
+                    return false;
+                }
             }
         }
         return owner.isOnline() && owner.getLocation().distance(npc.getEntity().getLocation()) < 20;

@@ -3,6 +3,7 @@ package me.sialim.fakehumans;
 import me.sialim.fakehumans.ai.HomunculusAI;
 import me.sialim.fakehumans.traits.FHHomunculusTrait;
 import me.sialim.fakehumans.traits.FHOwnerTrait;
+import me.sialim.fakehumans.traits.FHSitTrait;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
@@ -25,9 +26,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
+import java.util.List;
 
 public class NPCManager implements Listener {
     private final FakeHumans plugin;
@@ -45,6 +49,7 @@ public class NPCManager implements Listener {
         //npc.getOrAddTrait(SkinTrait.class).setSkinPersistent(Bukkit.getPlayer(ownerUUID));
         npc.getOrAddTrait(GameModeTrait.class).setGameMode(GameMode.SURVIVAL);
         npc.getOrAddTrait(AttributeTrait.class).setAttributeValue(Attribute.GENERIC_SCALE, 0.65);
+        npc.getOrAddTrait(FHSitTrait.class);
         npc.data().setPersistent(NPC.Metadata.FLYABLE, false);
         npc.data().setPersistent(NPC.Metadata.PICKUP_ITEMS, true);
         npc.data().setPersistent(NPC.Metadata.COLLIDABLE, true);
@@ -76,6 +81,8 @@ public class NPCManager implements Listener {
         } else {
             Bukkit.getLogger().severe("Owner player offline or doesn't exist.");
         }
+
+        npc.addTrait(FHHomunculusTrait.class);
 
         npc.setName(name);
         skinManager.setSkinFromUsername(npc, "smart112550");
@@ -175,11 +182,12 @@ public class NPCManager implements Listener {
         Bukkit.getLogger().info("Player right-clicked NPC: " + clickedNPC.getId());
 
         if (clickedNPC.hasTrait(FHHomunculusTrait.class)) {
+            //Bukkit.getLogger().info("NPC: " + clickedNPC.getId() + " has HomunculusTrait");
             FHHomunculusTrait trait = clickedNPC.getOrAddTrait(FHHomunculusTrait.class);
-            Bukkit.getLogger().info("NPC has Homunculus trait");
+            //Bukkit.getLogger().info("NPC has Homunculus trait");
             if (trait.getOwner().equals(p)) {
-                trait.getSitBehavior().toggleSit();
-                Bukkit.getLogger().info("Player toggled Homunculus");
+                clickedNPC.getOrAddTrait(FHSitTrait.class).toggleSit();
+                //Bukkit.getLogger().info("Player toggled Homunculus");
             }
         }
     }
@@ -191,5 +199,41 @@ public class NPCManager implements Listener {
         if (npc.hasTrait(FHHomunculusTrait.class)) {
             new HomunculusAI(npc, owner, plugin);
         }
+    }
+
+    @EventHandler public void onPlayerRejoin(PlayerJoinEvent e) {
+        for (NPC npc : getNPC(e.getPlayer())) {
+            if (npc.hasTrait(FHHomunculusTrait.class)) {
+                if (npc.getOrAddTrait(Owner.class).getOwnerId().equals(e.getPlayer().getUniqueId())) {
+                    HomunculusAI ai = new HomunculusAI(npc, e.getPlayer(), plugin);
+                }
+            }
+        }
+    }
+
+    @EventHandler public void onChunkLoad(ChunkLoadEvent e) {
+        for (Entity ent : e.getChunk().getEntities()) {
+            NPC npc = CitizensAPI.getNPCRegistry().getNPC(ent);
+            if (npc != null) {
+                if (npc.hasTrait(FHHomunculusTrait.class)) {
+                    Player owner = Bukkit.getPlayer(npc.getOrAddTrait(Owner.class).getOwnerId());
+                    HomunculusAI ai = new HomunculusAI(npc, owner, plugin);
+                }
+            }
+        }
+    }
+
+    public List<NPC> getNPC(Player p) {
+        List<NPC> NPCs = new ArrayList<>();
+        UUID ownerUUID = p.getUniqueId();
+        for (NPC npc : CitizensAPI.getNPCRegistry()) {
+            if (npc.hasTrait(Owner.class)) {
+                Owner ownerTrait = npc.getOrAddTrait(Owner.class);
+                if (ownerTrait.getOwnerId().equals(ownerUUID)) {
+                    NPCs.add(npc);
+                }
+            }
+        }
+        return NPCs;
     }
 }

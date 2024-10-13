@@ -1,6 +1,7 @@
 package me.sialim.fakehumans.behaviors;
 
 import me.sialim.fakehumans.traits.FHHomunculusTrait;
+import me.sialim.fakehumans.traits.FHSitTrait;
 import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
 import net.citizensnpcs.api.ai.tree.BehaviorStatus;
 import net.citizensnpcs.api.npc.NPC;
@@ -24,7 +25,7 @@ public class WanderBehavior extends BehaviorGoalAdapter {
 
     @Override
     public BehaviorStatus run() {
-        Bukkit.getLogger().info("WanderBehavior running");
+        //Bukkit.getLogger().info("WanderBehavior running");
         Location randomLocation = npc.getEntity().getLocation().add(
                 Math.random() * 10 - 5,
                 0,
@@ -37,9 +38,10 @@ public class WanderBehavior extends BehaviorGoalAdapter {
     @Override
     public boolean shouldExecute() {
         if (npc.hasTrait(FHHomunculusTrait.class)) {
-            FHHomunculusTrait trait = npc.getTrait(FHHomunculusTrait.class);
-            if (trait.getSitBehavior().isSitting) {
-                return false;
+            if (npc.hasTrait(FHSitTrait.class)) {
+                if (npc.getOrAddTrait(FHSitTrait.class).isSitting()) {
+                    return false;
+                }
             }
         }
         return !owner.isOnline() || owner.getLocation().distance(npc.getEntity().getLocation()) >= 20;
