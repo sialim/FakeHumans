@@ -24,6 +24,7 @@ public class WanderBehavior extends BehaviorGoalAdapter {
 
     @Override
     public BehaviorStatus run() {
+        Bukkit.getLogger().info("WanderBehavior running");
         Location randomLocation = npc.getEntity().getLocation().add(
                 Math.random() * 10 - 5,
                 0,

@@ -4,6 +4,7 @@ import me.sialim.fakehumans.traits.FHHomunculusTrait;
 import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
 import net.citizensnpcs.api.ai.tree.BehaviorStatus;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -24,6 +25,10 @@ public class FollowOwnerBehavior extends BehaviorGoalAdapter {
 
     @Override
     public BehaviorStatus run() {
+        if (!owner.isOnline()) {
+            return BehaviorStatus.SUCCESS;
+        }
+        Bukkit.getLogger().info("FollowOwnerBehavior running");
         double distanceToOwner = npc.getEntity().getLocation().distance(owner.getLocation());
         double minFollowDistance = 2.0;
         double maxFollowDistance = 40.0;

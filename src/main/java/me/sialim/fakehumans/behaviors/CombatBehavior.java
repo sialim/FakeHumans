@@ -32,6 +32,7 @@ public class CombatBehavior extends BehaviorGoalAdapter {
 
     @Override
     public BehaviorStatus run() {
+        Bukkit.getLogger().info("CombatBehavior running");
         LivingEntity target = findClosestHostileMob();
         if (target != null) {
             Location fleeLocation = npc.getEntity().getLocation().clone()

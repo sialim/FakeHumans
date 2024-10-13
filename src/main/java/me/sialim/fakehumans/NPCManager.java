@@ -5,8 +5,10 @@ import me.sialim.fakehumans.traits.FHHomunculusTrait;
 import me.sialim.fakehumans.traits.FHOwnerTrait;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
+import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.citizensnpcs.api.trait.trait.Owner;
 import net.citizensnpcs.trait.AttributeTrait;
 import net.citizensnpcs.trait.Controllable;
 import net.citizensnpcs.trait.GameModeTrait;
@@ -22,6 +24,7 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.Random;
 import java.util.UUID;
@@ -56,8 +59,10 @@ public class NPCManager implements Listener {
         npc.data().setPersistent(NPC.Metadata.REMOVE_FROM_PLAYERLIST, false);
         npc.data().setPersistent(NPC.Metadata.REMOVE_FROM_TABLIST, true);
         npc.data().setPersistent(NPC.Metadata.KNOCKBACK, true);
+        npc.setProtected(false);
 
 
+        npc.getOrAddTrait(Owner.class).setOwner(ownerUUID);
         FHOwnerTrait ownerTrait = npc.getOrAddTrait(FHOwnerTrait.class);
         if (ownerTrait != null) {
             ownerTrait.setOwner(ownerUUID);
@@ -67,7 +72,7 @@ public class NPCManager implements Listener {
 
         Player owner = Bukkit.getPlayer(ownerUUID);
         if (owner != null) {
-            new HomunculusAI(npc, owner);
+            new HomunculusAI(npc, owner, plugin);
         } else {
             Bukkit.getLogger().severe("Owner player offline or doesn't exist.");
         }
@@ -176,6 +181,15 @@ public class NPCManager implements Listener {
                 trait.getSitBehavior().toggleSit();
                 Bukkit.getLogger().info("Player toggled Homunculus");
             }
+        }
+    }
+
+    @EventHandler public void onNPCSpawn(NPCSpawnEvent e) {
+        NPC npc = e.getNPC();
+        Player owner = Bukkit.getPlayer(npc.getOrAddTrait(Owner.class).getOwnerId());
+
+        if (npc.hasTrait(FHHomunculusTrait.class)) {
+            new HomunculusAI(npc, owner, plugin);
         }
     }
 }

@@ -56,6 +56,7 @@ public final class FakeHumans extends JavaPlugin implements TabExecutor {
 
         getCommand("fakehumans").setExecutor(this);
         getCommand("fakehumans").setTabCompleter(this);
+        getServer().getPluginManager().registerEvents(npcManager, this);
     }
 
     @Override

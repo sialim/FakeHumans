@@ -1,5 +1,6 @@
 package me.sialim.fakehumans.ai;
 
+import me.sialim.fakehumans.FakeHumans;
 import me.sialim.fakehumans.behaviors.CombatBehavior;
 import me.sialim.fakehumans.behaviors.FollowOwnerBehavior;
 import me.sialim.fakehumans.behaviors.WanderBehavior;
@@ -10,21 +11,26 @@ import net.citizensnpcs.api.ai.tree.Sequence;
 import net.citizensnpcs.api.astar.pathfinder.DoorExaminer;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.ai.FallingExaminer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.PluginManager;
 
 public class HomunculusAI implements Listener {
     private final NPC npc;
     private final Player owner;
+    private final FakeHumans plugin;
 
-    public HomunculusAI(NPC npc, Player owner) {
+    public HomunculusAI(NPC npc, Player owner, FakeHumans plugin) {
         this.npc = npc;
         this.owner = owner;
+        this.plugin = plugin;
         setupBehaviorTree();
+        registerListener();
     }
 
     private void setupBehaviorTree() {
@@ -64,5 +70,14 @@ public class HomunculusAI implements Listener {
         if (e.getPlayer().equals(owner)) {
             setupBehaviorTree();
         }
+    }
+
+    private void registerListener() {
+        PluginManager pm = Bukkit.getServer().getPluginManager();
+        pm.registerEvents(this, plugin);
+    }
+
+    public void unregisterListener() {
+        PlayerJoinEvent.getHandlerList().unregister(this);
     }
 }

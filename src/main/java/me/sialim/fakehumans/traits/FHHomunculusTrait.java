@@ -1,5 +1,6 @@
 package me.sialim.fakehumans.traits;
 
+import me.sialim.fakehumans.FakeHumans;
 import me.sialim.fakehumans.NPCManager;
 import me.sialim.fakehumans.ai.HomunculusAI;
 import me.sialim.fakehumans.behaviors.SitBehavior;
@@ -19,7 +20,6 @@ import org.bukkit.entity.Player;
     @Override public void onSpawn() {
         if (npc != null) {
             sitBehavior = new SitBehavior(npc);
-            HomunculusAI ai = new HomunculusAI(npc, getOwner());
         }
     }
 
